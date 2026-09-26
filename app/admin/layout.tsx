@@ -61,46 +61,66 @@ export default function AdminLayout({
           Admin Panel
         </h2>
 
-        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)' }}>
+        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 'var(--spacing-xs)' }}>
+          {/* Main Section */}
+          <div style={{
+            fontSize: 'var(--font-size-sm)',
+            fontWeight: 'var(--font-weight-bold)',
+            color: 'var(--color-text-light)',
+            paddingLeft: 'var(--spacing-md)',
+            paddingTop: 'var(--spacing-md)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+          }}>
+            MAIN
+          </div>
           <Link
             href="/admin"
             style={{
               color: 'var(--color-white)',
               textDecoration: 'none',
-              padding: 'var(--spacing-sm)',
+              padding: 'var(--spacing-sm) var(--spacing-md)',
               borderRadius: 'var(--radius-sm)',
               display: 'block',
               transition: 'background-color var(--transition-fast)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--color-accent)';
-              e.currentTarget.style.color = 'var(--color-primary)';
+              e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = 'var(--color-white)';
             }}
           >
             📊 Dashboard
           </Link>
 
+          {/* Catalog Section */}
+          <div style={{
+            fontSize: 'var(--font-size-sm)',
+            fontWeight: 'var(--font-weight-bold)',
+            color: 'var(--color-text-light)',
+            paddingLeft: 'var(--spacing-md)',
+            paddingTop: 'var(--spacing-lg)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+          }}>
+            CATALOG
+          </div>
           <Link
             href="/admin/products"
             style={{
               color: 'var(--color-white)',
               textDecoration: 'none',
-              padding: 'var(--spacing-sm)',
+              padding: 'var(--spacing-sm) var(--spacing-md)',
               borderRadius: 'var(--radius-sm)',
               display: 'block',
               transition: 'background-color var(--transition-fast)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--color-accent)';
-              e.currentTarget.style.color = 'var(--color-primary)';
+              e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = 'var(--color-white)';
             }}
           >
             👕 Products
@@ -111,43 +131,83 @@ export default function AdminLayout({
             style={{
               color: 'var(--color-white)',
               textDecoration: 'none',
-              padding: 'var(--spacing-sm)',
+              padding: 'var(--spacing-sm) var(--spacing-md)',
               borderRadius: 'var(--radius-sm)',
               display: 'block',
               transition: 'background-color var(--transition-fast)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--color-accent)';
-              e.currentTarget.style.color = 'var(--color-primary)';
+              e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = 'var(--color-white)';
             }}
           >
             🏷️ Categories
           </Link>
 
+          {/* Orders Section */}
+          <div style={{
+            fontSize: 'var(--font-size-sm)',
+            fontWeight: 'var(--font-weight-bold)',
+            color: 'var(--color-text-light)',
+            paddingLeft: 'var(--spacing-md)',
+            paddingTop: 'var(--spacing-lg)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+          }}>
+            SALES
+          </div>
           <Link
-            href="/admin/upload-test"
+            href="/admin/orders"
             style={{
               color: 'var(--color-white)',
               textDecoration: 'none',
-              padding: 'var(--spacing-sm)',
+              padding: 'var(--spacing-sm) var(--spacing-md)',
               borderRadius: 'var(--radius-sm)',
               display: 'block',
               transition: 'background-color var(--transition-fast)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--color-accent)';
-              e.currentTarget.style.color = 'var(--color-primary)';
+              e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = 'var(--color-white)';
             }}
           >
-            📸 Image Upload
+            📦 Orders
+          </Link>
+
+          {/* Tools Section */}
+          <div style={{
+            fontSize: 'var(--font-size-sm)',
+            fontWeight: 'var(--font-weight-bold)',
+            color: 'var(--color-text-light)',
+            paddingLeft: 'var(--spacing-md)',
+            paddingTop: 'var(--spacing-lg)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+          }}>
+            TOOLS
+          </div>
+          <Link
+            href="/admin/upload-test"
+            style={{
+              color: 'var(--color-white)',
+              textDecoration: 'none',
+              padding: 'var(--spacing-sm) var(--spacing-md)',
+              borderRadius: 'var(--radius-sm)',
+              display: 'block',
+              transition: 'background-color var(--transition-fast)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+          >
+            📸 Image Upload Test
           </Link>
         </nav>
 
