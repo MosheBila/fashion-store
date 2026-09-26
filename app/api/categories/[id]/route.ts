@@ -10,9 +10,10 @@ import { query } from '@/lib/db';
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     // Check authentication
     const userRole = request.headers.get('x-user-role');
     if (userRole !== 'admin') {
@@ -22,7 +23,7 @@ export async function DELETE(
       );
     }
 
-    const categoryId = parseInt(params.id);
+    const categoryId = parseInt(id);
 
     if (isNaN(categoryId)) {
       return NextResponse.json(

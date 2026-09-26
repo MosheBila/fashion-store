@@ -57,7 +57,7 @@ export async function PUT(
       );
     }
 
-    const productId = parseInt(params.id);
+    const productId = parseInt(id);
     if (isNaN(productId)) {
       return NextResponse.json(
         { error: 'Invalid product ID' },
@@ -133,9 +133,10 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     // Check authentication
     const userRole = request.headers.get('x-user-role');
     if (userRole !== 'admin') {
@@ -145,7 +146,7 @@ export async function DELETE(
       );
     }
 
-    const productId = parseInt(params.id);
+    const productId = parseInt(id);
     if (isNaN(productId)) {
       return NextResponse.json(
         { error: 'Invalid product ID' },
