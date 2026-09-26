@@ -1,6 +1,8 @@
-# Deployment Checklist
+# Deployment Checklist — Phase 10
 
-Quick reference for deploying to Vercel.
+Quick reference for deploying the complete fashion e-store to Vercel.
+
+**All 9 phases complete — Ready for production deployment.**
 
 ## Pre-Deployment
 
@@ -17,16 +19,22 @@ Quick reference for deploying to Vercel.
 - [ ] Project imported from GitHub
 - [ ] Framework detected as "Next.js" ✓
 
-## Environment Variables in Vercel
+## Environment Variables in Vercel (9 total)
 
+### Database & Services
 - [ ] `POSTGRES_URLCONNECT` → Vercel Postgres connection string
+- [ ] `JWT_SECRET` → Random 32-char secret
+- [ ] `NEXT_PUBLIC_APP_URL` → https://your-domain.vercel.app
+
+### Cloudinary (Image Upload & CDN)
 - [ ] `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` → Cloudinary cloud name
 - [ ] `CLOUDINARY_API_KEY` → Cloudinary API key
 - [ ] `CLOUDINARY_API_SECRET` → Cloudinary API secret
-- [ ] `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` → Stripe pk_test_*
-- [ ] `STRIPE_SECRET_KEY` → Stripe sk_test_*
-- [ ] `JWT_SECRET` → Random 32-char secret
-- [ ] `NEXT_PUBLIC_APP_URL` → https://your-domain.vercel.app
+
+### Stripe (Payment Processing)
+- [ ] `STRIPE_SECRET_KEY` → Stripe sk_test_* (test mode)
+- [ ] `STRIPE_PUBLISHABLE_KEY` → Stripe pk_test_* (test mode)
+- [ ] `STRIPE_WEBHOOK_SECRET` → whsec_* (set after webhook configured)
 
 ## Database Setup
 
@@ -42,8 +50,19 @@ Quick reference for deploying to Vercel.
 - [ ] Check build logs for errors
 - [ ] Live URL working: `https://your-app.vercel.app`
 
+## Stripe Webhook Setup (CRITICAL FOR PAYMENTS ⭐)
+
+- [ ] Stripe webhook endpoint configured:
+  - Go to Stripe Dashboard → Developers → Webhooks → Add endpoint
+  - URL: `https://your-app.vercel.app/api/webhooks/stripe`
+  - Event: `checkout.session.completed`
+- [ ] Webhook signing secret copied
+- [ ] Added to Vercel env: `STRIPE_WEBHOOK_SECRET=whsec_...`
+- [ ] Vercel redeployed (for env var to take effect)
+
 ## Post-Deployment Testing
 
+### Admin & Products
 - [ ] Landing page loads (`/`)
 - [ ] Login page accessible (`/auth/login`)
 - [ ] Admin redirect works (`/admin` → `/auth/login`)
@@ -51,6 +70,32 @@ Quick reference for deploying to Vercel.
 - [ ] Admin dashboard accessible after login (`/admin`)
 - [ ] Products table visible (`/admin/products`)
 - [ ] Image upload test works (`/admin/upload-test`)
+- [ ] Can create product with category
+- [ ] Can upload product image
+
+### Customer Storefront
+- [ ] Shop page loads (`/shop`)
+- [ ] Products display in grid
+- [ ] Can search products by name
+- [ ] Category filter buttons work
+- [ ] Can click product for details
+- [ ] Product detail page shows size options
+- [ ] Can add product to cart
+- [ ] Cart persists on page reload
+- [ ] Can adjust quantities in cart
+- [ ] Can remove items from cart
+
+### Payment Flow ⭐ CRITICAL
+- [ ] Cart page shows order summary
+- [ ] Tax calculated correctly (10%)
+- [ ] Shipping free on orders > $100
+- [ ] "Proceed to Checkout" button works
+- [ ] Redirects to Stripe payment page
+- [ ] Test card payment succeeds: `4242 4242 4242 4242`
+- [ ] Redirected to success page with order number
+- [ ] Order appears in database (status: 'completed')
+- [ ] Webhook was called in Stripe dashboard
+- [ ] Cart clears after successful payment
 
 ## Security Verification
 

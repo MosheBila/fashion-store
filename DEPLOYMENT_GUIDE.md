@@ -1,14 +1,27 @@
-# Vercel Deployment Guide
+# Vercel Deployment Guide — Phase 10
 
 Complete step-by-step guide to deploy the fashion e-store to Vercel.
 
+## Status: Phases 1-9 Complete
+
+This deployment includes all features:
+- ✅ Database with 4 tables (users, products, categories, orders)
+- ✅ JWT authentication with admin panel
+- ✅ Cloudinary image upload and CDN
+- ✅ Complete products/categories API
+- ✅ Customer storefront (browse, search, filter)
+- ✅ Shopping cart with localStorage
+- ✅ Stripe payment integration
+- ✅ Webhook order processing
+
 ## Prerequisites
 
-- GitHub account
-- Vercel account (free)
-- Cloudinary account with credentials
-- Stripe account with API keys
-- Code pushed to GitHub
+- GitHub account (free at github.com)
+- Vercel account (free at vercel.com)
+- Cloudinary account with API credentials
+- Stripe account (test mode initially)
+- All code committed locally (ready to push)
+- Node.js and git installed locally
 
 ## Step 1: Push Code to GitHub
 
@@ -72,16 +85,23 @@ Get from:
 2. Go to **Account Details** → **API Keys**
 3. Copy credentials
 
-### Stripe
+### Stripe (Test Mode)
 ```
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = pk_test_...
 STRIPE_SECRET_KEY = sk_test_...
+STRIPE_PUBLISHABLE_KEY = pk_test_...
+STRIPE_WEBHOOK_SECRET = whsec_... (configured after deployment)
 ```
 
 Get from:
-1. Go to [stripe.com](https://stripe.com) → **Developers**
-2. Go to **API Keys**
-3. Copy test keys
+1. Go to [stripe.com](https://stripe.com) → **Developers** → **API Keys**
+2. Copy **Secret Key** (starts with `sk_test_`)
+3. Copy **Publishable Key** (starts with `pk_test_`)
+4. Webhook secret will be generated after setting up webhook endpoint
+
+**Note on Webhook Secret:**
+- After initial deployment, Stripe webhook will be at: `https://your-app.vercel.app/api/webhooks/stripe`
+- Set it up in Stripe Dashboard → Webhooks → Add endpoint
+- Copy the signing secret and add to Vercel environment variables
 
 ### JWT Secret
 ```
@@ -164,27 +184,88 @@ https://your-app.vercel.app
 - [ ] `/admin` redirects to login (good)
 - [ ] `/admin/upload-test` redirects to login (good)
 
-## Step 8: Test Full Flow
+## Step 8: Configure Stripe Webhook (CRITICAL FOR PAYMENTS)
 
-After migrations are complete:
+Before testing payments, set up the webhook:
 
-1. **Register/Login**
+1. Go to [stripe.com](https://stripe.com) → **Developers** → **Webhooks**
+2. Click **"Add Endpoint"**
+3. Enter endpoint URL:
    ```
-   Email: admin@example.com
-   Password: password123
+   https://your-app.vercel.app/api/webhooks/stripe
    ```
+   (Replace with your actual Vercel domain)
+4. Select events: Check **"checkout.session.completed"**
+5. Click **"Add Endpoint"**
+6. Copy the **Signing Secret** (starts with `whsec_`)
+7. Go to Vercel Dashboard → Settings → Environment Variables
+8. Add new variable:
+   ```
+   STRIPE_WEBHOOK_SECRET = whsec_...
+   ```
+9. Deploy again (push to GitHub or redeploy in Vercel)
 
-2. **Navigate to Admin**
-   ```
-   /admin → see dashboard
-   /admin/products → see empty products table
-   /admin/upload-test → test image upload
-   ```
+**Why this matters:** Without the webhook secret, payments won't create orders in the database.
 
-3. **Test Product Creation**
-   - Add a category first (Phase 6, or manually via DB)
-   - Create a product with image
-   - See it in products table
+## Step 9: Test Full Flow
+
+After migrations and webhook setup are complete:
+
+### 1. Register/Login (Admin)
+```
+Go to: https://your-app.vercel.app/auth/login
+Email: admin@example.com
+Password: password123
+```
+
+### 2. Create Products (Admin)
+- Navigate to `/admin/products`
+- Add a category first
+- Create 2-3 products with images
+- Set prices ($50-150) and stock quantities
+
+### 3. Test Customer Storefront
+```
+Go to: https://your-app.vercel.app/shop
+- See all products in grid
+- Search by name
+- Filter by category
+- Click product for details
+- View sizes and pricing
+```
+
+### 4. Test Shopping Cart
+- Add products to cart (different quantities)
+- Update quantities in cart
+- See order summary (subtotal, tax 10%, shipping)
+- Verify free shipping on $100+
+
+### 5. Test Payment Flow ⭐ CRITICAL
+```
+Go to: https://your-app.vercel.app/shop/cart
+Click "Proceed to Checkout"
+→ Redirected to Stripe payment page
+→ Use test card: 4242 4242 4242 4242
+→ Expiry: 12/25 (any future date)
+→ CVC: 123 (any 3 digits)
+→ Name: Any name
+→ Click "Pay"
+→ Should see /shop/order-success with order number
+```
+
+### 6. Verify Order in Database
+```
+Vercel Dashboard → Storage → Postgres → Query Database
+SELECT * FROM orders;
+```
+Should show the order with status = 'completed'
+
+### 7. Verify Webhook Was Called
+```
+Stripe Dashboard → Developers → Webhooks → [Your endpoint]
+Click to see events
+Should show "checkout.session.completed" with status "Succeeded"
+```
 
 ## Environment Variables Checklist
 
@@ -193,11 +274,14 @@ After migrations are complete:
 ✅ NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
 ✅ CLOUDINARY_API_KEY
 ✅ CLOUDINARY_API_SECRET
-✅ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-✅ STRIPE_SECRET_KEY
+✅ STRIPE_SECRET_KEY (test mode initially)
+✅ STRIPE_PUBLISHABLE_KEY (test mode initially)
+✅ STRIPE_WEBHOOK_SECRET (set after webhook configured)
 ✅ JWT_SECRET
 ✅ NEXT_PUBLIC_APP_URL
 ```
+
+**Total: 9 environment variables** (STRIPE_WEBHOOK_SECRET can be added later)
 
 ## Troubleshooting
 
@@ -274,16 +358,47 @@ Changes take effect on next deployment (push code or redeploy).
 - [ ] Regular database backups
 - [ ] Keep dependencies updated
 
-## Next Steps
+## Phase 10 Deployment Checklist
 
-1. ✅ Deploy to Vercel
-2. ✅ Run database migrations
-3. Test full flow (auth → products → admin panel)
-4. Phase 6 — Categories API
-5. Phase 7 — Admin panel UI improvements
-6. Phase 8 — Customer storefront (show products)
-7. Phase 9 — Stripe checkout
-8. Phase 10 — Production hardening
+### Pre-Deployment (Local)
+- [ ] All code committed to Git
+- [ ] Run `npm run build` locally (verify no errors)
+- [ ] Run `npm run dev` and test locally
+- [ ] Check `.env.local` has all required variables
+
+### Deployment Steps
+- [ ] Push code to GitHub (main branch)
+- [ ] Create/connect Vercel project
+- [ ] Add all environment variables in Vercel
+- [ ] Deploy (wait for green status)
+- [ ] Run database migrations
+- [ ] Configure Stripe webhook endpoint
+
+### Post-Deployment Testing
+- [ ] Admin login works
+- [ ] Product creation works
+- [ ] Image upload to Cloudinary works
+- [ ] Customer can browse `/shop`
+- [ ] Customer can add to cart
+- [ ] Payment flow works (test card)
+- [ ] Order appears in database
+- [ ] Webhook was called in Stripe
+
+### Production Readiness (Before Going Live with Real Money)
+- [ ] All test cases pass
+- [ ] Error handling works (try invalid payment)
+- [ ] Cart persists across page reloads
+- [ ] Images load from Cloudinary
+- [ ] Admin dashboard shows stats
+- [ ] JWT token authentication works
+- [ ] Middleware protects admin routes
+
+### Production Keys (Later, When Ready for Real Payments)
+- [ ] Get live Stripe keys (`sk_live_*`, `pk_live_*`)
+- [ ] Update `STRIPE_SECRET_KEY` and `STRIPE_PUBLISHABLE_KEY`
+- [ ] Re-test payment flow with live keys
+- [ ] Monitor logs and error rates
+- [ ] Keep backups of environment variables
 
 ## Resources
 
