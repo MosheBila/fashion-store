@@ -1,69 +1,161 @@
-import Image from "next/image";
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div style={{ backgroundColor: 'var(--color-background)' }}>
+      {/* Navbar */}
+      <nav style={{
+        backgroundColor: 'var(--color-primary)',
+        color: 'var(--color-white)',
+        padding: 'var(--spacing-md) var(--spacing-lg)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}>
+        <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 'var(--font-weight-extra-bold)' }}>
+          LUXURY FASHION
+        </h1>
+        <div style={{ display: 'flex', gap: 'var(--spacing-lg)' }}>
+          <Link href="/shop" style={{ color: 'var(--color-white)', textDecoration: 'none' }}>
+            Shop
+          </Link>
+          <Link href="/admin" style={{ color: 'var(--color-accent)', textDecoration: 'none', fontWeight: 'bold' }}>
+            Admin
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </nav>
+
+      {/* Hero Section */}
+      <section style={{
+        backgroundColor: 'var(--color-primary)',
+        color: 'var(--color-white)',
+        padding: 'var(--spacing-2xl)',
+        textAlign: 'center',
+        minHeight: '400px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <h2 style={{
+          fontSize: 'var(--font-size-3xl)',
+          fontWeight: 'var(--font-weight-extra-bold)',
+          marginBottom: 'var(--spacing-lg)',
+          maxWidth: '600px',
+        }}>
+          Curated Fashion for the Discerning
+        </h2>
+        <p style={{
+          fontSize: 'var(--font-size-lg)',
+          color: 'var(--color-text-light)',
+          marginBottom: 'var(--spacing-lg)',
+          maxWidth: '500px',
+        }}>
+          Premium clothing and accessories sourced from the finest designers worldwide.
+        </p>
+        <style>{`
+          .hero-btn {
+            background-color: var(--color-accent);
+            color: var(--color-primary);
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-lg);
+            display: inline-block;
+            transition: all var(--transition-normal);
+          }
+          .hero-btn:hover {
+            background-color: var(--color-primary);
+            color: var(--color-accent);
+          }
+        `}</style>
+        <Link href="/shop" className="hero-btn">
+          Explore Collection
+        </Link>
+      </section>
+
+      {/* Features Section */}
+      <section style={{
+        padding: 'var(--spacing-2xl) var(--spacing-lg)',
+        backgroundColor: 'var(--color-white)',
+      }}>
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: 'var(--spacing-lg)',
+        }}>
+          {[
+            { icon: '📦', title: 'Free Shipping', desc: 'On orders over $100' },
+            { icon: '🔒', title: 'Secure Checkout', desc: 'Stripe payment processing' },
+            { icon: '💳', title: 'Easy Returns', desc: '30-day money-back guarantee' },
+            { icon: '⭐', title: 'Premium Quality', desc: 'Curated selections only' },
+          ].map((feature, idx) => (
+            <div
+              key={idx}
+              style={{
+                backgroundColor: 'var(--color-gray-light)',
+                padding: 'var(--spacing-lg)',
+                borderRadius: 'var(--radius-sm)',
+                textAlign: 'center',
+                border: '1px solid var(--color-border)',
+              }}
+            >
+              <div style={{ fontSize: '2rem', marginBottom: 'var(--spacing-md)' }}>
+                {feature.icon}
+              </div>
+              <h3 style={{ color: 'var(--color-primary)', marginBottom: 'var(--spacing-sm)' }}>
+                {feature.title}
+              </h3>
+              <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+                {feature.desc}
+              </p>
+            </div>
+          ))}
         </div>
-      </main>
+      </section>
+
+      {/* CTA Section */}
+      <section style={{
+        backgroundColor: 'var(--color-accent)',
+        padding: 'var(--spacing-2xl)',
+        textAlign: 'center',
+        color: 'var(--color-primary)',
+      }}>
+        <h3 style={{ fontSize: 'var(--font-size-2xl)', marginBottom: 'var(--spacing-md)' }}>
+          Ready to Discover?
+        </h3>
+        <p style={{ marginBottom: 'var(--spacing-lg)', fontSize: 'var(--font-size-lg)' }}>
+          Browse our latest collection now
+        </p>
+        <Link
+          href="/shop"
+          style={{
+            backgroundColor: 'var(--color-primary)',
+            color: 'var(--color-white)',
+            padding: 'var(--spacing-md) var(--spacing-lg)',
+            borderRadius: 'var(--radius-sm)',
+            textDecoration: 'none',
+            fontWeight: 'var(--font-weight-bold)',
+            display: 'inline-block',
+          }}
+        >
+          Shop Now
+        </Link>
+      </section>
+
+      {/* Footer */}
+      <footer style={{
+        backgroundColor: 'var(--color-primary)',
+        color: 'var(--color-text-light)',
+        padding: 'var(--spacing-lg)',
+        textAlign: 'center',
+        fontSize: 'var(--font-size-sm)',
+      }}>
+        <p>&copy; 2026 Luxury Fashion Store. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
