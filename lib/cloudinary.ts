@@ -1,4 +1,4 @@
-import { v2 as cloudinary } from 'next-cloudinary';
+import { v2 as cloudinary } from 'cloudinary';
 
 const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const apiKey = process.env.CLOUDINARY_API_KEY;
